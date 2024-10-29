@@ -1,6 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Button, Grid, Box, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
+import Modal from '@mui/material/Modal';
 import SwitchButton from './Button';
+
+
+
+const style = {
+  position: 'absolute' ,
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid white',
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+  maxHeight: '80vh', 
+  overflowY:'auto'
+};
 
 const App = () => {
   const [isMains, setIsMains] = useState(false);
@@ -8,12 +28,16 @@ const App = () => {
   const [isBatteryCharge, setIsBatteryCharge] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedOption1, setSelectedOption1] = useState('');
-
+  const [openModal1,setOpenModal1]=useState(true);
+  const [openModal2,setOpenModal2]=useState(false);
+  const [openModal3,setOpenModal3]=useState(false);
+  const [openModal4,setOpenModal4]=useState(false);
+  const [openModal5,setOpenModal5]=useState(false);
 
   
 
   const [formData, setFormData] = useState({
-    SerialNumber:'',
+    SerialNumber:'GVC-CUPS-4005',
     BatteryVoltage:'',
     BatteryCapacity:'',
     IpVoltage1:'',
@@ -199,8 +223,36 @@ const App = () => {
 
   return (
     <Box sx={{ mt: 5, maxWidth: 600, mx: 'auto' }}>
-      <Typography variant="h4" component="h2" gutterBottom>
-        Uniline Device Data
+      <Stack sx={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+      <Button  variant="contained" color="primary" onClick={()=>setOpenModal1(true)}>
+        G1
+      </Button>
+      <Button  variant="contained" color="primary" onClick={()=>setOpenModal2(true)}>
+        G2
+      </Button>
+      <Button  variant="contained" color="primary" onClick={()=>setOpenModal3(true)}>
+        G3
+      </Button>
+      <Button  variant="contained" color="primary" onClick={()=>setOpenModal4(true)}>
+        I
+      </Button>
+      <Button  variant="contained" color="primary" onClick={()=>setOpenModal5(true)}>
+        GF
+      </Button>
+
+      </Stack>
+
+      <Modal
+        open={openModal1}
+        onClose={()=>setOpenModal1(false)}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 500 }}>
+        <div className="modal-dialog" role="document">
+        <div className="modal-content">
+        <Typography variant="h4" component="h2" gutterBottom>
+        G1
       </Typography>
       <form noValidate onSubmit={handleSubmit}>
         <Grid container spacing={2}>
@@ -265,6 +317,243 @@ const App = () => {
           
             />
           </Grid>
+          
+          <Grid item xs={12}>
+            <TextField
+              label="Temperature"
+              fullWidth
+              name="Temperature"
+              value={formData.Temperature}
+              onChange={handleInputChange}
+              error={!!errors.Temperature}
+              helperText={errors.Temperature}
+            />
+          </Grid>
+         
+        
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+        
+        </div>
+    </div>
+    
+
+        </Box>
+        </Modal>
+
+     {/* G2 STARTED */}
+
+        <Modal
+        open={openModal2}
+        onClose={()=>setOpenModal2(false)}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 500 }}>
+        <div className="modal-dialog" role="document">
+        <div className="modal-content">
+        <Typography variant="h4" component="h2" gutterBottom>
+         G2
+      </Typography>
+      <form noValidate onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+        <Grid item xs={12}>
+            <TextField
+              label="SerialNumber"
+              fullWidth
+              name="SerialNumber"
+              value={formData.SerialNumber}
+              onChange={handleInputChange}
+              error={!!errors.SerialNumber}
+              helperText={errors.SerialNumber}
+              required
+            />
+          </Grid>
+         
+        
+         
+          <div>
+          <label>
+        <input
+          type="radio"
+          name="BatteryLow"
+          value="BatteryLow"
+          checked={selectedOption1 === 'BatteryLow'}
+          onChange={handleOptionChange1}
+        />
+         Battery Low
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="BatteryShutDown"
+          value="BatteryShutDown"
+          checked={selectedOption1 === 'BatteryShutDown'}
+          onChange={handleOptionChange1}
+        />
+         Battery Shut Down
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="BatteryOkay"
+          value="BatteryOkay"
+          checked={selectedOption1 === 'BatteryOkay'}
+          onChange={handleOptionChange1}
+        />
+        Battery Okay
+      </label>
+      </div>
+          <Grid item xs={12}>
+            <SwitchButton
+              name="Mains"
+              value={formData.Mains}
+              onChange={(e) => handleSwitchChange2('Mains', e.target.checked)}
+              label="Mains"
+              OnLabel="ON"
+              Offlable="OFF"
+              isChecked={isMains}
+              setIsChecked={setIsMains}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <SwitchButton
+              name="Inverter"
+              value={formData.InverterStatus}
+              onChange={(e) => handleSwitchChange2('InverterStatus', e.target.checked)}
+              label="Inverter"
+              OnLabel="ON"
+              Offlable="OFF"
+              isChecked={isInverter}
+              setIsChecked={setIsInverter}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <SwitchButton
+              name="BatteryCharge"
+              value={formData.BatteryCharge}
+              onChange={(e) => handleSwitchChange1('BatteryCharge', e.target.checked)}
+              label="Battery Charge"
+              OnLabel="BOOST"
+              Offlable="FLOAT"
+              isChecked={isBatteryCharge}
+              setIsChecked={setIsBatteryCharge}
+            />
+          </Grid>
+          <div>
+      <label>
+        <input
+          type="radio"
+          name="HighDC"
+          value="HighDC"
+          checked={selectedOption === 'HighDC'}
+          onChange={handleOptionChange}
+        />
+         Hign DC
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="OverLoad"
+          value="OverLoad"
+          checked={selectedOption === 'OverLoad'}
+          onChange={handleOptionChange}
+        />
+         Over Load
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="OverTemperature"
+          value="OverTemperature"
+          checked={selectedOption === 'OverTemperature'}
+          onChange={handleOptionChange}
+        />
+         Over Temperature
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="ShortCircuit"
+          value="ShortCircuit"
+          checked={selectedOption === 'ShortCircuit'}
+          onChange={handleOptionChange}
+        />
+         Short Circuit
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="EmergencyStop"
+          value="EmergencyStop"
+          checked={selectedOption === 'EmergencyStop'}
+          onChange={handleOptionChange}
+        />
+        Emergency Stop
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="Okay"
+          value="Okay"
+          checked={selectedOption === 'Okay'}
+          onChange={handleOptionChange}
+        />
+        Okay
+      </label>
+      
+     
+    </div>
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+        
+        </div>
+    </div>
+    
+
+        </Box>
+        </Modal>
+
+        {/* G3 STARTED */}
+
+
+        <Modal
+        open={openModal3}
+        onClose={()=>setOpenModal3(false)}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 500 }}>
+        <div className="modal-dialog" role="document">
+        <div className="modal-content">
+        <Typography variant="h4" component="h2" gutterBottom>
+        G3
+      </Typography>
+      <form noValidate onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+        <Grid item xs={12}>
+            <TextField
+              label="SerialNumber"
+              fullWidth
+              name="SerialNumber"
+              value={formData.SerialNumber}
+              onChange={handleInputChange}
+              error={!!errors.SerialNumber}
+              helperText={errors.SerialNumber}
+              required
+            />
+          </Grid>
+         
           <Grid item xs={12}>
             <TextField
               label="Input Voltage 1"
@@ -365,17 +654,54 @@ const App = () => {
               helperText={errors.Load3}
             />
           </Grid>
+      
           <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+        
+        </div>
+    </div>
+    
+
+        </Box>
+        </Modal>
+
+
+        {/* I STARTED */}
+
+        <Modal
+        open={openModal4}
+        onClose={()=>setOpenModal4(false)}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 500 }}>
+        <div className="modal-dialog" role="document">
+        <div className="modal-content">
+        <Typography variant="h4" component="h2" gutterBottom>
+         I
+      </Typography>
+      <form noValidate onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+        <Grid item xs={12}>
             <TextField
-              label="Temperature"
+              label="SerialNumber"
               fullWidth
-              name="Temperature"
-              value={formData.Temperature}
+              name="SerialNumber"
+              value={formData.SerialNumber}
               onChange={handleInputChange}
-              error={!!errors.Temperature}
-              helperText={errors.Temperature}
+              error={!!errors.SerialNumber}
+              helperText={errors.SerialNumber}
+              required
             />
           </Grid>
+        
+        
+          
           <Grid item xs={12}>
             <TextField
               label="Company"
@@ -409,6 +735,53 @@ const App = () => {
               helperText={errors.version}
             />
           </Grid>
+         
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+        
+        </div>
+    </div>
+    
+
+        </Box>
+        </Modal>
+
+
+        {/* GF STARTED */}
+
+
+        <Modal
+        open={openModal5}
+        onClose={()=>setOpenModal5(false)}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 500 }}>
+        <div className="modal-dialog" role="document">
+        <div className="modal-content" style={{overflow:'auto'}}>
+        <Typography variant="h4" component="h2" gutterBottom>
+         GF
+      </Typography>
+      <form noValidate onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+        <Grid item xs={12}>
+            <TextField
+              label="SerialNumber"
+              fullWidth
+              name="SerialNumber"
+              value={formData.SerialNumber}
+              onChange={handleInputChange}
+              error={!!errors.SerialNumber}
+              helperText={errors.SerialNumber}
+              required
+            />
+          </Grid>
+        
           <Grid item xs={12}>
             <TextField
               label="RectifierNeutral"
@@ -564,139 +937,7 @@ const App = () => {
             />
           </Grid>
           
-         
-          <div>
-          <label>
-        <input
-          type="radio"
-          name="BatteryLow"
-          value="BatteryLow"
-          checked={selectedOption1 === 'BatteryLow'}
-          onChange={handleOptionChange1}
-        />
-         Battery Low
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="BatteryShutDown"
-          value="BatteryShutDown"
-          checked={selectedOption1 === 'BatteryShutDown'}
-          onChange={handleOptionChange1}
-        />
-         Battery Shut Down
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="BatteryOkay"
-          value="BatteryOkay"
-          checked={selectedOption1 === 'BatteryOkay'}
-          onChange={handleOptionChange1}
-        />
-        Battery Okay
-      </label>
-      </div>
-          <Grid item xs={12}>
-            <SwitchButton
-              name="Mains"
-              value={formData.Mains}
-              onChange={(e) => handleSwitchChange2('Mains', e.target.checked)}
-              label="Mains"
-              OnLabel="ON"
-              Offlable="OFF"
-              isChecked={isMains}
-              setIsChecked={setIsMains}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <SwitchButton
-              name="Inverter"
-              value={formData.InverterStatus}
-              onChange={(e) => handleSwitchChange2('InverterStatus', e.target.checked)}
-              label="Inverter"
-              OnLabel="ON"
-              Offlable="OFF"
-              isChecked={isInverter}
-              setIsChecked={setIsInverter}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <SwitchButton
-              name="BatteryCharge"
-              value={formData.BatteryCharge}
-              onChange={(e) => handleSwitchChange1('BatteryCharge', e.target.checked)}
-              label="Battery Charge"
-              OnLabel="BOOST"
-              Offlable="FLOAT"
-              isChecked={isBatteryCharge}
-              setIsChecked={setIsBatteryCharge}
-            />
-          </Grid>
-          <div>
-      <label>
-        <input
-          type="radio"
-          name="HighDC"
-          value="HighDC"
-          checked={selectedOption === 'HighDC'}
-          onChange={handleOptionChange}
-        />
-         Hign DC
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="OverLoad"
-          value="OverLoad"
-          checked={selectedOption === 'OverLoad'}
-          onChange={handleOptionChange}
-        />
-         Over Load
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="OverTemperature"
-          value="OverTemperature"
-          checked={selectedOption === 'OverTemperature'}
-          onChange={handleOptionChange}
-        />
-         Over Temperature
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="ShortCircuit"
-          value="ShortCircuit"
-          checked={selectedOption === 'ShortCircuit'}
-          onChange={handleOptionChange}
-        />
-         Short Circuit
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="EmergencyStop"
-          value="EmergencyStop"
-          checked={selectedOption === 'EmergencyStop'}
-          onChange={handleOptionChange}
-        />
-        Emergency Stop
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="Okay"
-          value="Okay"
-          checked={selectedOption === 'Okay'}
-          onChange={handleOptionChange}
-        />
-        Okay
-      </label>
-      
-     
-    </div>
+        
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Submit
@@ -704,6 +945,15 @@ const App = () => {
           </Grid>
         </Grid>
       </form>
+        
+        </div>
+    </div>
+    
+
+        </Box>
+        </Modal>
+     
+    
     </Box>
   );
 };
